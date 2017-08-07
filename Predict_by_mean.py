@@ -1,15 +1,16 @@
 #conding=UTF-8
-'''
-Created on 2017年08月08日
+##
+##Created on 2017年08月08日
 
-@author: evans
-'''
+## @author: evans
+
 ##用历史均值作为预测值
 import pandas as pd
 import pickle
 import numpy as np
+import datetime
 df=pd.read_csv(r"/Users/evans/Desktop/竞赛/天池智能交通/cleand_df_withDateTime.csv",header=0)
-pred=pd.read_csv("/Users/evans/Desktop/竞赛/天池智能交通/x_predict.csv",header=0)
+x_pred=pd.read_csv("/Users/evans/Desktop/竞赛/天池智能交通/x_predict.csv",header=0)
 
 new_df=df[df['hour']==8]
 variables=['link_ID','pr_full','weekday', 'hour', 'minute','month','startTime','travel_time']
@@ -35,14 +36,15 @@ def get_value_by_minute(i):
     n = x_pred['travel_time'][i]
     if n == []:
         clue = (agg1['link_ID'] == x_pred['link_ID'][i]) & (agg1['minute'] == x_pred['minute'][i])
-        return pred['travel_time'][clue].values
+        return agg1['travel_time'][clue].values
     else:
         return x_pred['travel_time'][i]
 ##预测数据集是已经做好的，代码将在另一个py文件中给出
+import datetime
 x_pred['pred_travelTime']=[get_value_by_week(x) for x in range(len(x_pred))]
 x_pred['pred_travel_time']=[get_value_by_minute(x) for x in range(len(x_pred))]
 submit1=x_pred.loc[:,['link_ID','start_time','travel_time','pred_travel_time']]
-submit1['start_time']=[datetime.datetime.strptime(x,'%Y-%m-%d %H:%M:%S') for x in submit1['start_time']]]
+submit1['start_time']=[datetime.datetime.strptime(x,'%Y-%m-%d %H:%M:%S') for x in submit1['start_time']]
 submit1['date']=[x.strftime('%Y-%m-%d') for x in submit1['start_time']]
 submit1['end_time']=[x+datetime.timedelta(minutes=2) for x in submit1['start_time']]
 submit1['time_interval']=['('+str(submit1['start_time'][i])+','+str(submit1['end_time'][i])+']'\
