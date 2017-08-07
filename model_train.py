@@ -1,3 +1,10 @@
+#conding=UTF-8
+'''
+Created on 2017年08月08日
+
+ @author: evans
+'''
+
 import pandas as pd
 from sklearn import svm
 from sklearn import cross_validation
