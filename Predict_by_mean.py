@@ -1,9 +1,10 @@
 #conding=UTF-8
 ##
-##Created on 2017年08月08日
+'''
+Created on 2017年08月08日
 
-## @author: evans
-
+@author: evans
+'''
 ##用历史均值作为预测值
 import pandas as pd
 import pickle
